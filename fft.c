@@ -38,8 +38,13 @@ ComplexNum* FFT(ComplexNum* Input, int InputLen){
 		for(j=0;j<FFTLen;j+=BlkSize){
 			for(k=0;k<HalfBlkSize;k++){
 				Temp = ComplexMulInFFT(Output[j+k+HalfBlkSize], Omega[k*FFTLen/BlkSize]);
-				AddTemp = ComplexAddInFFT(Output[j+k],Temp);
-				SubTemp = ComplexSubInFFT(Output[j+k],Temp);
+				//AddTemp = ComplexAddInFFT(Output[j+k],Temp);
+				//SubTemp = ComplexSubInFFT(Output[j+k],Temp);
+				//Below run fast.
+				AddTemp.re = Output[j+k].re+Temp.re;
+				AddTemp.im = Output[j+k].im+Temp.im;
+				SubTemp.re = Output[j+k].re-Temp.re;
+				SubTemp.im = Output[j+k].im-Temp.im;	
 				Output[j+k] = AddTemp;
 				Output[j+k+HalfBlkSize] = SubTemp;
 			}
