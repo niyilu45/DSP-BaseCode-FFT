@@ -21,7 +21,10 @@ ComplexNum* FFT(ComplexNum* Input, int InputLen){
 	ComplexNum* Omega;
 	OmegaLibList CurOmegaLib;
 
-	CurOmegaLib = FindAndInsertOmegaLib(FFTLen, OmegaLib);
+	CurOmegaLib = FindOmegaLib(FFTLen, OmegaLib);
+	while((CurOmegaLib = FindOmegaLib(FFTLen, OmegaLib)) == NULL){
+		OmegaLib = InsertOmegaLib(FFTLen, OmegaLib);
+	}
 	Omega = CurOmegaLib->Omega;
 
 	// 2) Change the Input Order.
@@ -182,17 +185,6 @@ static OmegaLibList FindOmegaLib(int FFTLen, OmegaLibList Head){
 	return NULL;
 }
 
-static OmegaLibList FindAndInsertOmegaLib(int FFTLen, OmegaLibList Head){
-	OmegaLibList L;
-	L = FindOmegaLib(FFTLen, Head);
-	if(L == NULL){
-		Head = InsertOmegaLib(FFTLen, Head);
-		L = FindOmegaLib(FFTLen, Head);
-	}
-
-	return L;
-}
-
 static OmegaLibList InsertOmegaLib(int FFTLen, OmegaLibList L){
 	if(L == NULL){
 		L = (OmegaLibList)calloc(1, sizeof(OmegaLibNode));
@@ -201,7 +193,7 @@ static OmegaLibList InsertOmegaLib(int FFTLen, OmegaLibList L){
 		L->Omega = CalcOmegaLib(FFTLen);
 	}
 
-	if(L->Len = FFTLen){
+	if(L->Len == FFTLen){
 		return L;
 	}
 

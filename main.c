@@ -57,9 +57,28 @@ int main()
 		printf("%f+i%f\n",IFFTOut[i].re, IFFTOut[i].im);
 	}
 
-	free(Coeff);
 	free(FFTOut);
 	free(IFFTOut);
+
+	FFTLen = 64;
+	FFTOut = FFT(Coeff, FFTLen);
+	IFFTOut = IFFT(FFTOut, FFTLen);
+
+
+	printf("输出FFT后的结果\n");
+	for(i=0;i<20;i++){
+		printf("%f+i%f\n",FFTOut[i].re, FFTOut[i].im);
+	}
+	printf("输出FFT后的结果\n");
+	for(i=0;i<20;i++){
+		printf("%f+i%f\n",IFFTOut[i].re, IFFTOut[i].im);
+	}
+
+	free(FFTOut);
+	free(IFFTOut);
+
+	ClearOmegaLib();
+	free(Coeff);
 	return 0;
 }
 
